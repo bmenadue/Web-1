@@ -1,3 +1,42 @@
+html {
+  font-family: Verdana, "Myriad Web", Syntax, sans-serif;
+
+}
+
+body {
+  padding: 0;
+  border: 0;
+  background-image: url(images/background.jpg);
+  background-position: center;
+  width: auto;
+  text-align: center;
+}
+
+h1 {
+  padding: 10px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+
+img{
+  height: 150px;
+  width: 150px;
+}
+
+.admin{
+  color: #FFFFFF;
+  text-align: right;
+  vertical-align: bottom;
+
+}
+
+.home{
+  color: #FFFFFF;
+  text-align: left;
+  vertical-align: bottom;
+}
+
 .error {
   font-weight: bold;
   color: #FF0000;
@@ -5,10 +44,38 @@
 
 .score {
   font-size:150%;
-  color: #36407F;
+  color: maroon;
 }
 
+.topscoreheader
+{
+  border-radius: 10px;
+
+  text-align: center;
+  font-size: 200%;
+  background-color: maroon;
+  color: #FFFFFF;
+}
 .scoreinfo {
   vertical-align: top;
   padding-right:15px;
+}
+
+.scores{
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  border: black solid;
+  padding: 10px 10px 10px 10px;
+  font-size: medium;
+  margin: auto;
+  width: 500px;}
+
+.header{
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  border: black solid;
+  width: 700px;
+  padding: 10px 10px 10px 10px;
+  font-size: medium;
+  margin: auto;
 }
