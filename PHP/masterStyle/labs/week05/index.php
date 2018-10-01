@@ -1,40 +1,78 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE>
+<html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>Guitar Wars - High Scores</title>
   <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 <body>
+    <div class="header">
   <h2>Guitar Wars - High Scores</h2>
   <p>Welcome, Guitar Warrior, do you have what it takes to crack the high score list? If so, just <a href="addscore.php">add your own score</a>.</p>
-  <hr />
+    </div>
+    <br/>
+  <div class="scores">
 
 <?php
-  // Connect to the database 
-  $dbc = mysqli_connect('www.softdev.mstclab', 'bmenadue', 'bmenadue', 'gwdb')
-    or die('Could not connect to Database.');
 
-  // Retrieve the score data from MySQL
-  $query = "SELECT * FROM guitarwars";
-  $data = mysqli_query($dbc, $query)
-  or die('Could not perform query.');
+require_once('appvars.php');
+require_once('connectvars.php');
 
+    // Establish DB connection
+$username = "bmenadue";
+$password = "bmenadue";
+$hostname = "softdev.mstclab.com";
+$database = "bmenadue";
 
-  // Loop through the array of score data, formatting it as HTML 
-  echo '<table>';
-  while ($row = mysqli_fetch_array($data)) { 
-    // Display the score data
-    echo '<tr><td class="scoreinfo">';
-    echo '<span class="score">' . $row['score'] . '</span><br />';
-    echo '<strong>Name:</strong> ' . $row['name'] . '<br />';
-    echo '<strong>Date:</strong> ' . $row['date'] . '</td></tr>';
-  }
-  echo '</table>';
+    // Establish DB connection
+try {
+    $connection = new PDO("mysql:host=$hostname;dbname=$database", $username, $password);
 
-  mysqli_close($dbc);
+    $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    echo "Connection failed: " . $e->getMessage();
+}
+
+try {
+
+    $i = 0;
+
+            // Retrieve the score data from MySQL
+    $query = "SELECT * FROM gwdb";
+    foreach ($connection->query($query, PDO::FETCH_ASSOC) as $row) {
+
+            // Loop through the array of score data, formatting it as HTML
+        echo '<table>';
+                // Display the score data
+        if ($i == 0) {
+            echo '<tr><td colspan="2" class="topscoreheader"> Top Score: ' .
+                $row['score'] . '</td></tr>';
+        }
+
+        echo '<tr><td class="scoreinfo">';
+        echo '<span class="score">' . $row['score'] . '</span><br />';
+        echo '<strong>Name:</strong> ' . $row['name'] . '<br />';
+        echo '<strong>Date:</strong> ' . $row['date'] . '</td>';
+        if (is_file(GW_UPLOADPATH . $row['screenshot']) && filesize(GW_UPLOADPATH . $row['screenshot']) > 0) {
+            echo '<td><img src="' . GW_UPLOADPATH . $row['screenshot'] . '" alt="Score image" /></td></tr>';
+        } else {
+            echo '<td><img src="' . GW_UPLOADPATH . 'unverified.gif' . '" alt="Unverified score" /></td></tr>';
+        }
+        $i++;
+    }
+} catch (PDOException $i) {
+    echo "Failed to retrieve records: " . $i->getMessage();
+}
+
+echo '</table>';
+
+$connection = null;
 ?>
+</div>
+
+<p class="admin">Admin <a href="admin.php">site</a></p>
+<p class="home">Back to Week 5 <a href="week5home.html">Home</a></p>
+
 
 </body> 
 </html>
